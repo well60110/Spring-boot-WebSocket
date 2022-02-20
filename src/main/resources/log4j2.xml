@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+	<Properties>
+		<Property name="LOG_FILE_PATH">/AppData/spring-boot-websocket/logs/
+		</Property>
+	</Properties>
+
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<!-- <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5p %c{1}:%L 
+				- %msg%n" /> -->
+			<PatternLayout pattern="%d [%t] %-5p [%c %M] - %m%n" />
+		</Console>
+		<!-- 注意%i和 %d{yyyyMMdd}，这样子才能将文件删除 -->
+		<RollingFile name="RollingFile"
+			filename="${LOG_FILE_PATH}/Spring-boot-websocket.log"
+			filepattern="${LOG_FILE_PATH}/spring-boot-websocket.log.%d{yyyy-MM-dd}">
+			<!-- filepattern="/log/%d{yyyyMMdd}-Convergence-%i.log"> -->
+			<PatternLayout>
+				<Pattern>%d [%t] %-5p [%c %M] - %m%n</Pattern>
+			</PatternLayout>
+			<Policies>
+				<!-- <TimeBasedTriggeringPolicy /> <CronTriggeringPolicy schedule="45 
+					15 * * * ?" /> -->
+				<TimeBasedTriggeringPolicy modulate="true"
+					interval="1" />
+			</Policies>
+		</RollingFile>
+	</Appenders>
+
+	<Loggers>
+		<Root level="INFO">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="RollingFile" />
+		</Root>
+	</Loggers>
+</Configuration>

@@ -1,0 +1,14 @@
+spring: 
+  profiles.active: DEV
+  #Thymeleaf
+  
+spring.thymeleaf.check-template-location: true
+spring.thymeleaf.prefix: classpath:templates/
+spring.thymeleaf.suffix: .html
+spring.thymeleaf.mode: HTML
+spring.thymeleaf.encoding: UTF-8
+    
+#server
+server:
+  servlet.context-path: /
+  port: 8081
