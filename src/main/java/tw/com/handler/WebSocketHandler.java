@@ -28,7 +28,7 @@ public class WebSocketHandler extends TextWebSocketHandler
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception
     {
-        log.info("連線建立开始");
+        log.info("連線建立開始");
 
         String key = this.getKey(session);
 
@@ -38,6 +38,36 @@ public class WebSocketHandler extends TextWebSocketHandler
             WsSessionManager.add(key, session);
             WsSessionManager.sendInfo(key, "websocket success");
         }
+    }
+
+    /**
+     * socket 結束連線事件
+     *
+     * @param session
+     * @param status
+     * @throws Exception
+     */
+    @Override
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception
+    {
+        String key = this.getKey(session);
+        WsSessionManager.remove(key);
+    }
+
+    /**
+     * socket 連線異常事件
+     *
+     * @param session
+     * @throws Exception
+     */
+    @Override
+    public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception
+    {
+        String key = this.getKey(session);
+        log.info("[{}]連線異常", key);
+
+        if (WsSessionManager.get(key) != null)
+            WsSessionManager.remove(key);
     }
 
     /**
@@ -54,20 +84,6 @@ public class WebSocketHandler extends TextWebSocketHandler
         String payload = message.getPayload();
         String key = this.getKey(session);
         log.info("server 接收到 " + key + " 發送的訊息: " + payload);
-    }
-
-    /**
-     * socket 結束連線事件
-     *
-     * @param session
-     * @param status
-     * @throws Exception
-     */
-    @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception
-    {
-        String key = this.getKey(session);
-        WsSessionManager.remove(key);
     }
 
     private String getKey(WebSocketSession session)

@@ -52,13 +52,19 @@ public class WsSessionManager
         return SESSION_POOL.get(key);
     }
 
+    /**
+     * 發送訊息給Client端
+     */
     public static void sendInfo(String key, String message) throws IOException
     {
-        if (StringUtils.isNotBlank(key))
+        if (StringUtils.isNotBlank(key) && SESSION_POOL.containsKey(key))
         {
             WebSocketSession wsSession = WsSessionManager.get(key);
-            if (wsSession != null)
-                wsSession.sendMessage(new TextMessage("server發送訊息給" + key + " ,內容: " + message));
+            wsSession.sendMessage(new TextMessage("server發送訊息給" + key + " ,內容: " + message));
+        }
+        else
+        {
+            log.error("找不到[{}]", key);
         }
     }
 

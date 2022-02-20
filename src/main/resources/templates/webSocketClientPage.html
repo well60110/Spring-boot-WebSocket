@@ -72,6 +72,9 @@
                 setConnected(false);
                 log('Info: WebSocket connection closed.');
             };
+            ws.onerror = function () {
+                log('Info: WebSocket connection error.');
+            };
         }
 
         //断开连接
